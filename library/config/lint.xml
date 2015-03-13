@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+
+    <issue id="InvalidPackage" severity="ignore"/> <!-- FIXME Check why auto_parcel is marked as having invalid reference -->
+    <issue id="MissingTranslation"> <!-- FIXME ignore only until we setup pootle things in gradle -->
+        <ignore path="src/main/res/values/config.xml" />
+    </issue>
+
+
+</lint>

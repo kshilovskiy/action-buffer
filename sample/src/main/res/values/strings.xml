@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">ActionBuffer</string>
+
+    <string name="dialog_notification_title">App Notification</string>
+    <string name="button_ok">OK</string>
+    <string name="title_activity_startup">StartupActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="reatined_activity_title">Click the button to start the background task which will
+        trigger fragment result after couple of seconds. The controller will be retained even after
+        device changes the orientation. So you will see the dialog after the orientation
+        change.</string>
+    <string name="non_retained_activity_title">Click the button to start the background task which
+        will trigger fragment result after couple of seconds. The controller will be recreated once
+        the device changes the orientation. So you won\'t see the dialog after the orientation
+        change.</string>
+</resources>

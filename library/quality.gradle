@@ -1,0 +1,45 @@
+apply plugin: 'findbugs'
+apply plugin: 'checkstyle'
+
+task findbugs(type: FindBugs) {
+    ignoreFailures = true
+    effort = "max"
+    reportLevel = "high"
+    excludeFilter = new File("${projectDir}/config/findbugs-exclude-filter.xml")
+    classes = files("$project.buildDir/intermediates/classes/")
+
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    reports {
+        xml {
+            destination "$project.buildDir/outputs/reports/findbugs/findbugs.xml"
+            withMessages true
+        }
+    }
+
+    classpath = files()
+}
+
+task checkstyle(type: Checkstyle) {
+    configFile file("${projectDir}/config/checkstyle.xml")
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+    exclude '**/androidTest/**'
+    exclude '**/R.java'
+    exclude '**/BuildConfig.java'
+
+    ignoreFailures = true
+    reports {
+        xml {
+            destination "$project.buildDir/outputs/reports/checkstyle/checkstyle.xml"
+        }
+    }
+    classpath = files()
+}
+
+task runStaticAnalysis() {
+    dependsOn tasks.checkstyle, tasks.findbugs
+}
