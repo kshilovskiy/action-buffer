@@ -30,6 +30,7 @@ public class SimpleController {
 
     /**
      * Triggers all the collected actions for the provided {@code view.}
+     * and stops buffering further actions.
      */
     public void start(ReactiveView view) {
         mView = view;
@@ -37,20 +38,27 @@ public class SimpleController {
     }
 
     /**
-     * Unbinds the view provided in {@link #start(Object)} method. Also notifies the view
-     * controller to start buffering actions.
+     * Unbinds the view provided in {@link #start(Object)} method. Also instructs
+     * the delegegate to start buffering actions.
      */
     public void stop() {
         mActionDelegate.startBuffering();
         mView = null;
     }
-
+    
+    /**
+    * Starts the background task and reports result on the main thread using
+    * handleAction(Action<ReactiveView> action) method.
+    */
+    public void startBackgroundTask() {
+      //... asynchronous background work happens here
+    }
 
     /**
      * Either applies an {@code action} immediately if view is bound to the current controller
      * or buffers it for later emission.
      */
-    protected void handleAction(Action<ReactiveView> action) {
+    private void handleAction(Action<ReactiveView> action) {
         mActionDelegate.handle(mView, action);
     }
 }
@@ -65,7 +73,8 @@ public class MyActivity extends FragmentActivity implements ReactiveView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity);
-        //This will retain only the last action in the buffer when activity is no in visible state
+        //This will retain only the last action in the buffer when activity is not in the 
+        //visible state
         mController = new SimpleController(new ActionSingleBuffer<ReactiveView>());
 
         Button startButton = (Button) findViewById(R.id.start_button);
@@ -88,7 +97,6 @@ public class MyActivity extends FragmentActivity implements ReactiveView {
         super.onPause();
         mController.stop();
     }
-
 
     /**
      * Is called by the controller to notify the background task has finished.
